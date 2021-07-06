@@ -1,0 +1,7 @@
+const express = require('express')
+const App = express()
+const mongoose = require('mongoose')
+const cors = require('cors')
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+require('dotenv/config')
