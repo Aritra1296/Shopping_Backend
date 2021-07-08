@@ -20,7 +20,8 @@ router.post('/submitNew', async (req, res) => {
     productDescription: req.body.productDescription,
     productImage: req.body.productImage,
     productPrice: req.body.productPrice,
-    total: req.body.total
+    productCount: req.body.productCount,
+    total: req.body.total,
   })
   try {
     const savedCart = await cart.save()
