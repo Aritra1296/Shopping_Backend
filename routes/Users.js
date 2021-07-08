@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 //SUBMIT A NEW USER
 router.post('/', async (req, res) => {
   try {
-    const { email, userName, password ,phone,gender,address1,address2} = req.body
+    const { email, userName, userRole,password ,phone,gender,address1,address2} = req.body
 
     //VALIDATION ALL  FIELDS REQUIRED
     if (!userName || !email || !password)
@@ -28,6 +28,7 @@ router.post('/', async (req, res) => {
     const newUser = new User({
       email,
       userName,
+      userRole,
       passwordHash,
       phone,
       gender,
