@@ -8,8 +8,8 @@ require('dotenv/config')
 
 //MIDDLEWARE
 //COFIGURE CORS
-app.use(bodyParser.json())
-app.use(cookieParser())
+app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: [process.env.ALLOW_DOMAIN],
