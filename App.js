@@ -19,6 +19,7 @@ app.use(
 //IMPORT ROUTER
 app.use("/users", require("./routes/Users"));
 app.use("/products", require("./routes/Products"));
+app.use('/carts', require('./routes/Carts'))
 
 //CONNECT TO DB
 mongoose.connect(
