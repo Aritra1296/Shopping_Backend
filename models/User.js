@@ -1,5 +1,24 @@
 const mongoose = require('mongoose')
 
+const addressSchema = mongoose.Schema({
+  address: {
+    type: String,
+    required: true,
+  },
+  zip: {
+    type: String,
+    required: true,
+  },
+  district: {
+    type: String,
+    required: true,
+  },
+  state: {
+    type: String,
+    required: true,
+  },
+})
+
 const userSchema = mongoose.Schema({
   email: {
     type: String,
@@ -25,14 +44,7 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  address1: {
-    type: String,
-    required: true,
-  },
-  address2: {
-    type: String,
-    required: true,
-  },
+  userAddess: [addressSchema],
   date: {
     type: Date,
     default: Date.now,

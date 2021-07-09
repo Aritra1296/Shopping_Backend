@@ -1,4 +1,11 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+
+const imageSchema = mongoose.Schema({
+  image: {
+    type: String,
+    required: true,
+  },
+})
 
 const productSchema = mongoose.Schema({
   productCategory: {
@@ -13,10 +20,9 @@ const productSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  productImage: {
-    type: String,
-    required: true,
-  },
+  productImage: [
+    imageSchema,
+  ],
   productPrice: {
     type: String,
     required: true,

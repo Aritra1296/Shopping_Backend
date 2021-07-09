@@ -29,7 +29,11 @@ router.post('/submitNew', async (req, res) => {
     productCategory: req.body.productCategory,
     productName: req.body.productName,
     productDescription: req.body.productDescription,
-    productImage: req.body.productImage,
+    productImage: [
+      { image: req.body.productImage[0].image },
+      { image: req.body.productImage[1].image },
+      { image: req.body.productImage[2].image },
+    ],
     productPrice: req.body.productPrice,
     productStatus: req.body.productStatus,
   })

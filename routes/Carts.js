@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Cart = require('../models/Cart')
 
-//GET ALL THE CARTS 
+//GET ALL THE CARTS
 router.get('/', async (req, res) => {
   try {
     const cart = await Cart.find()
@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
   } catch (error) {
     res.json({ message: error })
   }
-});
+})
 
 //SUBMIT A CART
 router.post('/submitNew', async (req, res) => {
@@ -18,22 +18,22 @@ router.post('/submitNew', async (req, res) => {
     userId: req.body.userId,
     productName: req.body.productName,
     productDescription: req.body.productDescription,
-    productImage: {
-      image: [String(req.body.productImage.image)],
-    },
+    productImage: [
+      { image: req.body.productImage[0].image },
+      { image: req.body.productImage[1].image },
+      { image: req.body.productImage[2].image },
+    ],
     productPrice: req.body.productPrice,
     productCount: req.body.productCount,
     total: req.body.total,
   })
   try {
-    // console.log(req.body);
-    console.log(req.body.productImage[0].image)
     const savedCart = await cart.save()
     res.json(savedCart)
   } catch (err) {
     res.json({ message: err })
   }
-});
+})
 
 //DELETE A CART
 router.delete('/:cartID', async (req, res) => {
