@@ -18,12 +18,16 @@ router.post('/submitNew', async (req, res) => {
     userId: req.body.userId,
     productName: req.body.productName,
     productDescription: req.body.productDescription,
-    productImage: req.body.productImage,
+    productImage: {
+      image: [String(req.body.productImage.image)],
+    },
     productPrice: req.body.productPrice,
     productCount: req.body.productCount,
     total: req.body.total,
   })
   try {
+    // console.log(req.body);
+    console.log(req.body.productImage[0].image)
     const savedCart = await cart.save()
     res.json(savedCart)
   } catch (err) {
