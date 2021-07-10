@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const Product = require('../models/Product')
+const Product = require('../models/Product');
+const auth = require('../middleware/auth')
 
 
-//GET ALL THE POSTS OF A SPECIFIC USER FROM DB
-router.get('/', async (req, res) => {
+//GET ALL THE PRODUCTS OF A SPECIFIC USER FROM DB
+router.get('/', auth, async (req, res) => {
   try {
     const product = await Product.find()
     res.json(product)
@@ -13,7 +14,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-//GET THE SPECIFIC POST FROM DB FOR EDITING
+//GET THE SPECIFIC PRODUCT FROM DB FOR EDITING
 // router.get('/edit/:postID', auth, async (req, res) => {
 //   try {
 //     const post = await Post.findById(req.params.postID)
@@ -23,8 +24,8 @@ router.get('/', async (req, res) => {
 //   }
 // })
 
-//SUBMIT POST
-router.post('/submitNew', async (req, res) => {
+//SUBMIT A PRODUCT
+router.post('/submitNew', auth, async (req, res) => {
   const product = new Product({
     productCategory: req.body.productCategory,
     productName: req.body.productName,
@@ -45,7 +46,7 @@ router.post('/submitNew', async (req, res) => {
   }
 })
 
-//UPDATE A POST
+//UPDATE A PRODUCT
 // router.patch('/:postID', auth, async (req, res) => {
 //   try {
 //     const updatedPost = await Post.findOneAndUpdate(
@@ -65,7 +66,7 @@ router.post('/submitNew', async (req, res) => {
 //   }
 // })
 
-//DELETE A POST
+//DELETE A PRODUCT
 // router.delete('/:postID', auth, async (req, res) => {
 //   try {
 //     const removedPost = await Post.remove({ _id: req.params.postID })

@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const Cart = require('../models/Cart')
+const Cart = require('../models/Cart');
+const auth = require('../middleware/auth')
 
 //GET ALL THE CARTS
-router.get('/', async (req, res) => {
+router.get('/', auth,async (req, res) => {
   try {
     const cart = await Cart.find()
     res.json(cart)
@@ -13,7 +14,7 @@ router.get('/', async (req, res) => {
 })
 
 //SUBMIT A CART
-router.post('/submitNew', async (req, res) => {
+router.post('/submitNew', auth, async (req, res) => {
   const cart = new Cart({
     userId: req.body.userId,
     productName: req.body.productName,
@@ -36,7 +37,7 @@ router.post('/submitNew', async (req, res) => {
 })
 
 //DELETE A CART
-router.delete('/:cartID', async (req, res) => {
+router.delete('/:cartID', auth, async (req, res) => {
   try {
     const removedCart = await Cart.remove({ _id: req.params.cartID })
     res.json(removedCart)

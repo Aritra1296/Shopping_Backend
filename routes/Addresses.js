@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const Address = require('../models/Address')
+const Address = require('../models/Address');
+const auth = require('../middleware/auth')
 
-//GET ALL THE Address OF A SPECIFIC USER FROM DB
-router.get('/', async (req, res) => {
+//GET ALL THE ADDRESSES OF A SPECIFIC USER FROM DB
+router.get('/', auth, async (req, res) => {
   try {
     const address = await Address.find()
     res.json(address)
@@ -12,8 +13,8 @@ router.get('/', async (req, res) => {
   }
 })
 
-//SUBMIT A Address
-router.post('/submitNew', async (req, res) => {
+//SUBMIT A ADDRESS
+router.post('/submitNew',auth, async (req, res) => {
   const address = new Address({
     userId: req.body.userId,
     addressLine: req.body.addressLine,
