@@ -94,7 +94,7 @@ router.post('/login', async (req, res) => {
     console.log({
       domain: process.env.COOKIE_DOMAIN,
       httpOnly: true,
-    })
+    });
     res
       .cookie('token', token, {
         domain: process.env.COOKIE_DOMAIN,
