@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const Product = require('../models/Product')
+const Product = require('../models/Product');
+const auth = require('../middleware/auth')
 
 
-//GET ALL THE POSTS OF A SPECIFIC USER FROM DB
-router.get('/', async (req, res) => {
+//GET ALL THE PRODUCTS OF A SPECIFIC USER FROM DB
+router.get('/', auth, async (req, res) => {
   try {
     const product = await Product.find()
     res.json(product)
@@ -13,23 +14,13 @@ router.get('/', async (req, res) => {
   }
 })
 
-//GET THE SPECIFIC POST FROM DB FOR EDITING
-// router.get('/edit/:postID', auth, async (req, res) => {
-//   try {
-//     const post = await Post.findById(req.params.postID)
-//     res.json(post)
-//   } catch (error) {
-//     res.json({ message: error })
-//   }
-// })
-
-//SUBMIT POST
-router.post('/submitNew', async (req, res) => {
+//SUBMIT A PRODUCT
+router.post('/submitNew', auth, async (req, res) => {
   const product = new Product({
     productCategory: req.body.productCategory,
     productName: req.body.productName,
     productDescription: req.body.productDescription,
-    productImage: req.body.productImage,
+    productImage:req.body.productImage   ,
     productPrice: req.body.productPrice,
     productStatus: req.body.productStatus,
   })
@@ -39,36 +30,52 @@ router.post('/submitNew', async (req, res) => {
   } catch (err) {
     res.json({ message: err })
   }
+});
+
+//GET THE SPECIFIC PRODUCT FROM DB FOR VIEW DETAILS
+router.get('/view/:productID', auth, async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.productID)
+    res.json(product)
+  } catch (error) {
+    res.json({ message: error })
+  }
+});
+
+//UPDATE A PRODUCT
+router.patch('/:productID', auth, async (req, res) => {
+  try {
+    const updatedProduct = await Post.Product(
+      { _id: req.params.productID },
+      {
+        $set: {
+          productCategory: req.body.productCategory,
+          productName: req.body.productName,
+          productDescription: req.body.productDescription,
+          productImage: [
+            { image: req.body.productImage[0].image },
+            { image: req.body.productImage[1].image },
+            { image: req.body.productImage[2].image },
+          ],
+          productPrice: req.body.productPrice,
+          productStatus: req.body.productStatus
+        },
+      }
+    )
+    res.json(updatedProduct);
+  } catch (error) {
+    res.json({ message: error })
+  }
+});
+
+//DELETE A PRODUCT
+router.delete('/:productID', auth, async (req, res) => {
+  try {
+    const removedProduct = await Product.remove({ _id: req.params.productID })
+    res.json(removedProduct);
+  } catch (error) {
+    res.json({ message: error })
+  }
 })
-
-//UPDATE A POST
-// router.patch('/:postID', auth, async (req, res) => {
-//   try {
-//     const updatedPost = await Post.findOneAndUpdate(
-//       { _id: req.params.postID },
-//       {
-//         $set: {
-//           name: req.body.name,
-//           phone: req.body.phone,
-//           email: req.body.email,
-//           address: req.body.address,
-//         },
-//       }
-//     )
-//     res.json(updatedPost)
-//   } catch (error) {
-//     res.json({ message: error })
-//   }
-// })
-
-//DELETE A POST
-// router.delete('/:postID', auth, async (req, res) => {
-//   try {
-//     const removedPost = await Post.remove({ _id: req.params.postID })
-//     res.json(removedPost)
-//   } catch (error) {
-//     res.json({ message: error })
-//   }
-// })
 
 module.exports = router
