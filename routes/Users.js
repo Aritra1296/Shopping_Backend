@@ -4,11 +4,21 @@ const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+//GET DETAISL OF A SPECIFIC USER FROM DB BY EMAIL(-------WILL BE UPDATED LATER-------)
+router.get('/:email', async (req, res) => {
+  try {
+    const user = await User.find({ email: String(req.params.email )})
+    res.json(user)
+    console.log('here')
+  } catch (error) {
+    res.json({ message: error })
+  }
+})
 
 //SUBMIT A NEW USER
 router.post('/', async (req, res) => {
   try {
-    const { email, userName, userRole,password ,phone,gender} = req.body
+    const { email, userName, userRole, password, phone, gender } = req.body
 
     //VALIDATION ALL  FIELDS REQUIRED
     if (!userName || !email || !password)
@@ -31,7 +41,7 @@ router.post('/', async (req, res) => {
       userRole,
       passwordHash,
       phone,
-      gender
+      gender,
     })
     const savedUser = await newUser.save()
 
@@ -47,14 +57,14 @@ router.post('/', async (req, res) => {
     //SEND TOKEN TO HTTP-ONLY COOKIE
     res
       .cookie('token', token, {
-        domain : process.env.COOKIE_DOMAIN,
+        domain: process.env.COOKIE_DOMAIN,
         httpOnly: true,
       })
       .send()
   } catch (err) {
     res.json({ message: err })
   }
-});
+})
 
 //LOG IN METHOD
 router.post('/login', async (req, res) => {
@@ -79,35 +89,32 @@ router.post('/login', async (req, res) => {
     )
     if (!passwordCorrect)
       return res.status(401).json({ errorMessage: 'Wrong email or password' })
-  
-  
+
     //SIGN TOKEN
     const token = jwt.sign(
       {
         user: existingUser._id,
       },
-      process.env.JWT_SECRET,
-      
+      process.env.JWT_SECRET
     )
 
     //SEND TOKEN TO HTTP-ONLY COOKIE
     console.log({
       domain: process.env.COOKIE_DOMAIN,
       httpOnly: true,
-    });
+    })
     res
       .cookie('token', token, {
         domain: process.env.COOKIE_DOMAIN,
         httpOnly: true,
       })
       .json(existingUser)
-      .send();
+      .send()
 
-      console.log("signed in");
-      
+    console.log('signed in')
   } catch (error) {
     //res.json({ message: err })
-    console.log(error);
+    console.log(error)
   }
 })
 
