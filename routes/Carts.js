@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const Cart = require('../models/Cart');
-const auth = require('../middleware/auth')
+const Cart = require('../models/Cart')
+// const auth = require('../middleware/auth')
 
 //GET ALL THE CARTS
-router.get('/', auth,async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const cart = await Cart.find()
     res.json(cart)
@@ -14,19 +14,14 @@ router.get('/', auth,async (req, res) => {
 })
 
 //SUBMIT A CART
-router.post('/submitNew', auth, async (req, res) => {
+router.post('/submitNew', async (req, res) => {
   const cart = new Cart({
     userId: req.body.userId,
     productName: req.body.productName,
     productDescription: req.body.productDescription,
-    productImage: [
-      { image: req.body.productImage[0].image },
-      { image: req.body.productImage[1].image },
-      { image: req.body.productImage[2].image },
-    ],
+    productImage: req.body.productImage,
     productPrice: req.body.productPrice,
-    productCount: req.body.productCount,
-    total: req.body.total,
+    productCount: req.body.productCount
   })
   try {
     const savedCart = await cart.save()
@@ -37,7 +32,7 @@ router.post('/submitNew', auth, async (req, res) => {
 })
 
 //DELETE A CART
-router.delete('/:cartID', auth, async (req, res) => {
+router.delete('/:cartID', async (req, res) => {
   try {
     const removedCart = await Cart.remove({ _id: req.params.cartID })
     res.json(removedCart)

@@ -1,11 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-const imageSchema = mongoose.Schema({
-  image: {
-    type: String,
-    required: true
-}
-});
 
 const cartSchema = mongoose.Schema({
   userId: {
@@ -20,13 +14,15 @@ const cartSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  productImage: [imageSchema],
-  
+  productImage: {
+    type: [String],
+    required: true,
+  },
   productCount: {
     type: String,
     required: true,
   },
-  total: {
+  productPrice: {
     type: String,
     required: true,
   },

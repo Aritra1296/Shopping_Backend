@@ -1,11 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const Product = require('../models/Product');
-const auth = require('../middleware/auth')
-
+const Product = require('../models/Product')
+// const auth = require('../middleware/auth')
 
 //GET ALL THE PRODUCTS OF A SPECIFIC USER FROM DB
-router.get('/',  async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const product = await Product.find()
     res.json(product)
@@ -15,12 +14,12 @@ router.get('/',  async (req, res) => {
 })
 
 //SUBMIT A PRODUCT
-router.post('/submitNew', auth, async (req, res) => {
+router.post('/submitNew', async (req, res) => {
   const product = new Product({
     productCategory: req.body.productCategory,
     productName: req.body.productName,
     productDescription: req.body.productDescription,
-    productImage:req.body.productImage   ,
+    productImage: req.body.productImage,
     productPrice: req.body.productPrice,
     productStatus: req.body.productStatus,
   })
@@ -30,20 +29,20 @@ router.post('/submitNew', auth, async (req, res) => {
   } catch (err) {
     res.json({ message: err })
   }
-});
+})
 
 //GET THE SPECIFIC PRODUCT FROM DB FOR VIEW DETAILS
-router.get('/view/:productID', auth, async (req, res) => {
+router.get('/view/:productID', async (req, res) => {
   try {
     const product = await Product.findById(req.params.productID)
     res.json(product)
   } catch (error) {
     res.json({ message: error })
   }
-});
+})
 
 //UPDATE A PRODUCT
-router.patch('/:productID', auth, async (req, res) => {
+router.patch('/:productID', async (req, res) => {
   try {
     const updatedProduct = await Post.Product(
       { _id: req.params.productID },
@@ -58,21 +57,21 @@ router.patch('/:productID', auth, async (req, res) => {
             { image: req.body.productImage[2].image },
           ],
           productPrice: req.body.productPrice,
-          productStatus: req.body.productStatus
+          productStatus: req.body.productStatus,
         },
       }
     )
-    res.json(updatedProduct);
+    res.json(updatedProduct)
   } catch (error) {
     res.json({ message: error })
   }
-});
+})
 
 //DELETE A PRODUCT
-router.delete('/:productID', auth, async (req, res) => {
+router.delete('/:productID', async (req, res) => {
   try {
     const removedProduct = await Product.remove({ _id: req.params.productID })
-    res.json(removedProduct);
+    res.json(removedProduct)
   } catch (error) {
     res.json({ message: error })
   }
