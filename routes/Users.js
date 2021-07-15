@@ -7,9 +7,8 @@ const jwt = require('jsonwebtoken')
 //GET DETAISL OF A SPECIFIC USER FROM DB BY EMAIL(-------WILL BE UPDATED LATER-------)
 router.get('/:email', async (req, res) => {
   try {
-    const user = await User.find({ email: String(req.params.email )})
-    res.json(user)
-    console.log('here')
+    const user = await User.findOne({ email: String(req.params.email )})
+    res.json(user);
   } catch (error) {
     res.json({ message: error })
   }
