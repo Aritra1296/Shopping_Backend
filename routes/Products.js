@@ -52,13 +52,10 @@ router.patch('/:productID', async (req, res) => {
           productCategory: req.body.productCategory,
           productName: req.body.productName,
           productDescription: req.body.productDescription,
-          productImage: [
-            { image: req.body.productImage[0].image },
-            { image: req.body.productImage[1].image },
-            { image: req.body.productImage[2].image },
-          ],
+          productImage: req.body.productImage,
           productPrice: req.body.productPrice,
           productStatus: req.body.productStatus,
+          productMaxQuantiy: req.body.productMaxQuantiy,
         },
       }
     )

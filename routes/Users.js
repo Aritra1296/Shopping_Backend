@@ -14,7 +14,25 @@ router.get('/:userId', async (req, res) => {
   }
 })
 
-//EDIT USER DETAILS
+//UPDATE USER DETAILS
+router.patch(`/edit/:userId`, async (req, res) => {
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: req.params.userId },
+      {
+        $set: {
+          email: req.body.email,
+          userName: req.body.userName,
+          phone: req.body.phone,
+          gender: req.body.gender,
+        },
+      }
+    )
+    res.json(updatedUser)
+  } catch (error) {
+    res.json({ message: error })
+  }
+})
 
 //SUBMIT A NEW USER
 router.post('/', async (req, res) => {
