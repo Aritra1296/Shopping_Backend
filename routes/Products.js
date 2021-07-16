@@ -22,6 +22,7 @@ router.post('/submitNew', async (req, res) => {
     productImage: req.body.productImage,
     productPrice: req.body.productPrice,
     productStatus: req.body.productStatus,
+    productMaxQuantiy: req.body.productMaxQuantiy,
   })
   try {
     const savedProduct = await product.save()

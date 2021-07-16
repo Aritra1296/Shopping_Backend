@@ -5,14 +5,16 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 //GET DETAISL OF A SPECIFIC USER FROM DB BY EMAIL(-------WILL BE UPDATED LATER-------)
-router.get('/:email', async (req, res) => {
+router.get('/:userId', async (req, res) => {
   try {
-    const user = await User.findOne({ email: String(req.params.email )})
-    res.json(user);
+    const user = await User.findOne({ _id: req.params.userId })
+    res.json(user)
   } catch (error) {
     res.json({ message: error })
   }
 })
+
+//EDIT USER DETAILS
 
 //SUBMIT A NEW USER
 router.post('/', async (req, res) => {
@@ -98,10 +100,6 @@ router.post('/login', async (req, res) => {
     )
 
     //SEND TOKEN TO HTTP-ONLY COOKIE
-    console.log({
-      domain: process.env.COOKIE_DOMAIN,
-      httpOnly: true,
-    })
     res
       .cookie('token', token, {
         domain: process.env.COOKIE_DOMAIN,
@@ -109,8 +107,8 @@ router.post('/login', async (req, res) => {
       })
       .json(existingUser)
       .send()
-
-    console.log('signed in')
+    console.log(token);
+    console.log('signed in');
   } catch (error) {
     //res.json({ message: err })
     console.log(error)
@@ -139,7 +137,7 @@ router.get('/logout', async (req, res) => {
       httpOnly: true,
       expires: new Date(0),
     })
-    .send()
+    .send();
 })
 
 module.exports = router

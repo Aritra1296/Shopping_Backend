@@ -15,14 +15,17 @@ const productSchema = mongoose.Schema({
   },
   productImage: {
     type: [String],
-    required: true
-  }
-  ,
+    required: true,
+  },
   productPrice: {
     type: String,
     required: true,
   },
   productStatus: {
+    type: String,
+    required: true,
+  },
+  productMaxQuantiy: {
     type: String,
     required: true,
   },
