@@ -18,10 +18,6 @@ const cartSchema = mongoose.Schema({
     type: [String],
     required: true,
   },
-  productCount: {
-    type: String,
-    required: true,
-  },
   productPrice: {
     type: String,
     required: true,

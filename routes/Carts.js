@@ -21,7 +21,6 @@ router.post('/submitNew', async (req, res) => {
     productDescription: req.body.productDescription,
     productImage: req.body.productImage,
     productPrice: req.body.productPrice,
-    productCount: req.body.productCount
   })
   try {
     const savedCart = await cart.save()
@@ -34,7 +33,7 @@ router.post('/submitNew', async (req, res) => {
 //DELETE A CART
 router.delete('/:cartID', async (req, res) => {
   try {
-    const removedCart = await Cart.remove({ _id: req.params.cartID })
+    const removedCart = await Cart.deleteOne({ _id: req.params.cartID })
     res.json(removedCart)
   } catch (error) {
     res.json({ message: error })
