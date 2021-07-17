@@ -46,7 +46,6 @@ router.patch(`/edit/:userId`, async (req, res) => {
         },
       }
     )
-    console.log(req.body.addressLine)
     res.json(updatedAddress)
   } catch (error) {
     res.json({ message: error })
