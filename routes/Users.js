@@ -25,6 +25,11 @@ router.patch(`/edit/:userId`, async (req, res) => {
           userName: req.body.userName,
           phone: req.body.phone,
           gender: req.body.gender,
+          addressLine: req.body.addressLine,
+          landMark: req.body.landMark,
+          zip: req.body.zip,
+          city: req.body.city,
+          state: req.body.state,
         },
       }
     )
@@ -37,7 +42,18 @@ router.patch(`/edit/:userId`, async (req, res) => {
 //SUBMIT A NEW USER
 router.post('/', async (req, res) => {
   try {
-    const { email, userName, userRole, password, phone, gender } = req.body
+    const {
+      email,
+      userName,
+      userRole,
+      password,
+      phone,
+      gender,
+      addressLine,
+      landMark,
+      zip,
+      city,
+      state } = req.body
 
     //VALIDATION ALL  FIELDS REQUIRED
     if (!userName || !email || !password)
@@ -61,6 +77,11 @@ router.post('/', async (req, res) => {
       passwordHash,
       phone,
       gender,
+      addressLine,
+      landMark,
+      zip,
+      city,
+      state,
     })
     const savedUser = await newUser.save()
 
@@ -72,6 +93,7 @@ router.post('/', async (req, res) => {
       process.env.JWT_SECRET
     )
     console.log('token', token)
+    console.log('user added')
 
     //SEND TOKEN TO HTTP-ONLY COOKIE
     res
@@ -125,8 +147,8 @@ router.post('/login', async (req, res) => {
       })
       .json(existingUser)
       .send()
-    console.log(token);
-    console.log('signed in');
+    console.log(token)
+    console.log('signed in')
   } catch (error) {
     //res.json({ message: err })
     console.log(error)
@@ -155,7 +177,7 @@ router.get('/logout', async (req, res) => {
       httpOnly: true,
       expires: new Date(0),
     })
-    .send();
+    .send()
 })
 
 module.exports = router
