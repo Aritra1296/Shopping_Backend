@@ -20,6 +20,7 @@ app.use(
 app.use("/users", require("./routes/Users"));
 app.use("/products", require("./routes/Products"));
 app.use('/carts', require('./routes/Carts'));
+app.use('/orders', require('./routes/OrderDetails'))
 
 
 //CONNECT TO DB

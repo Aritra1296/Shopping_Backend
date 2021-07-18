@@ -33,7 +33,7 @@ router.post('/submitNew', async (req, res) => {
 //DELETE A CART
 router.delete('/:cartID', async (req, res) => {
   try {
-    const removedCart = await Cart.deleteOne({ _id: req.params.cartID })
+    const removedCart = await Cart.findOneAndDelete({ _id: req.params.cartID })
     res.json(removedCart)
   } catch (error) {
     res.json({ message: error })
