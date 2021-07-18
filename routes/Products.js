@@ -1,7 +1,29 @@
 const express = require('express')
 const router = express.Router()
 const Product = require('../models/Product')
+const path = require('path')
+const multer = require('multer')
 // const auth = require('../middleware/auth')
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'ProductImages')
+  },
+  filename: (req, file, cb) => {
+    console.log(file)
+    cb(null, Date.now() + path.extname(file.originalname))
+  },
+})
+const upload = multer({ storage: storage })
+
+//Upload route
+router.post('/upload', upload.array('images', 100), (req, res, next) => {
+  try {
+    res.send('ok')
+  } catch (error) {
+    console.error(error)
+  }
+})
 
 //GET ALL THE PRODUCTS OF A SPECIFIC USER FROM DB
 router.get('/', async (req, res) => {
@@ -14,16 +36,17 @@ router.get('/', async (req, res) => {
 })
 
 //SUBMIT A PRODUCT
-router.post('/submitNew', async (req, res) => {
+router.post('/submitNew', upload.single('productImage'), async (req, res) => {
   const product = new Product({
     productCategory: req.body.productCategory,
     productName: req.body.productName,
     productDescription: req.body.productDescription,
-    productImage: req.body.productImage,
     productPrice: req.body.productPrice,
     productStatus: req.body.productStatus,
     productMaxQuantiy: req.body.productMaxQuantiy,
+    productImage: req.file.path,
   })
+  console.log(req.file)
   try {
     const savedProduct = await product.save()
     res.json(savedProduct)
