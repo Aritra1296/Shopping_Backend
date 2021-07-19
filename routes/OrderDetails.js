@@ -14,6 +14,7 @@ router.get('/', async (req, res) => {
 
 //SUBMIT A ORDER
 router.post('/submitNew', async (req, res) => {
+
   const orderDetail = new OrderDetail({
     productName: req.body.productName,
     productImage: req.body.productImage,
@@ -28,6 +29,8 @@ router.post('/submitNew', async (req, res) => {
     state: req.body.state,
   })
   try {
+    console.log(req.body);
+    
     const savedOrderDetail = await orderDetail.save()
     res.json(savedOrderDetail)
   } catch (err) {

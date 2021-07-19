@@ -25,7 +25,7 @@ const orderDetailSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-    addressLine: {
+  addressLine: {
     type: String,
     required: true,
   },
