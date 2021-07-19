@@ -16,15 +16,6 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage })
 
-//Upload route
-router.post('/upload', upload.array('images', 100), (req, res, next) => {
-  try {
-    res.send('ok')
-  } catch (error) {
-    console.error(error)
-  }
-})
-
 //GET ALL THE PRODUCTS OF A SPECIFIC USER FROM DB
 router.get('/', async (req, res) => {
   try {
@@ -60,29 +51,6 @@ router.get('/view/:productID', async (req, res) => {
   try {
     const product = await Product.findById(req.params.productID)
     res.json(product)
-  } catch (error) {
-    res.json({ message: error })
-  }
-})
-
-//UPDATE A PRODUCT
-router.patch('/:productID', async (req, res) => {
-  try {
-    const updatedProduct = await Post.Product(
-      { _id: req.params.productID },
-      {
-        $set: {
-          productCategory: req.body.productCategory,
-          productName: req.body.productName,
-          productDescription: req.body.productDescription,
-          productImage: req.body.productImage,
-          productPrice: req.body.productPrice,
-          productStatus: req.body.productStatus,
-          productMaxQuantiy: req.body.productMaxQuantiy,
-        },
-      }
-    )
-    res.json(updatedProduct)
   } catch (error) {
     res.json({ message: error })
   }

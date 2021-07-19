@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
-const orderDetailSchema = mongoose.Schema({
-  productName: {
+const productDetailsSchema = mongoose.Schema({
+ productName: {
     type: String,
     required: true,
   },
@@ -12,7 +12,12 @@ const orderDetailSchema = mongoose.Schema({
   productPrice: {
     type: String,
     required: true,
-  },
+  }
+})
+
+
+const orderDetailSchema = mongoose.Schema({
+  productDetails:[productDetailsSchema],
   email: {
     type: String,
     required: true,

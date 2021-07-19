@@ -4,6 +4,15 @@ const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+router.get('/findAll', async (req, res) => {
+  try {
+    const user = await User.find()
+    res.json(user)
+  } catch (error) {
+    res.json({ message: error })
+  }
+})
+
 //GET DETAISL OF A SPECIFIC USER FROM DB BY EMAIL(-------WILL BE UPDATED LATER-------)
 router.get('/:userId', async (req, res) => {
   try {
