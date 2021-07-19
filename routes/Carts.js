@@ -4,9 +4,9 @@ const Cart = require('../models/Cart')
 // const auth = require('../middleware/auth')
 
 //GET ALL THE CARTS
-router.get('/', async (req, res) => {
+router.get('/:userId', async (req, res) => {
   try {
-    const cart = await Cart.find()
+    const cart = await Cart.find({ userId: req.params.userId })
     res.json(cart)
   } catch (error) {
     res.json({ message: error })

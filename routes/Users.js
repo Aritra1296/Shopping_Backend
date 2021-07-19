@@ -46,14 +46,8 @@ router.post('/', async (req, res) => {
       email,
       userName,
       userRole,
-      password,
-      phone,
-      gender,
-      addressLine,
-      landMark,
-      zip,
-      city,
-      state } = req.body
+      password
+     } = req.body
 
     //VALIDATION ALL  FIELDS REQUIRED
     if (!userName || !email || !password)
@@ -75,13 +69,13 @@ router.post('/', async (req, res) => {
       userName,
       userRole,
       passwordHash,
-      phone,
-      gender,
-      addressLine,
-      landMark,
-      zip,
-      city,
-      state,
+      phone: 'fill up details',
+      gender: 'fill up details',
+      addressLine: 'fill up details',
+      landMark: 'fill up details',
+      zip: 'fill up details',
+      city: 'fill up details',
+      state: 'fill up details',
     })
     const savedUser = await newUser.save()
 
