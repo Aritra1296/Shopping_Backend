@@ -12,9 +12,20 @@ router.get('/', async (req, res) => {
   }
 })
 
+//GET ALL  THE ORDER OF A SPECIFIC USER
+router.get('/orderHistory/:userId', async (req, res) => {
+  try {
+    const orderDetailHistory = await OrderDetail.find({
+      userId: req.params.userId,
+    })
+    res.json(orderDetailHistory)
+  } catch (error) {
+    res.json({ message: error })
+  }
+})
+
 //SUBMIT A ORDER
 router.post('/submitNew', async (req, res) => {
-
   const orderDetail = new OrderDetail({
     productDetails: req.body.carts.map((cart) => {
       return {
@@ -23,6 +34,7 @@ router.post('/submitNew', async (req, res) => {
         productPrice: cart.productPrice,
       }
     }),
+    userId: req.body.user._id,
     userName: req.body.user.userName,
     email: req.body.user.email,
     phone: req.body.user.phone,
@@ -33,12 +45,9 @@ router.post('/submitNew', async (req, res) => {
     state: req.body.user.state,
   })
   try {
-   // console.log(req.body);
-   //console.log(orderDetail)
+
     const savedOrderDetails = await orderDetail.save()
-    console.log("break")
-    console.log(savedOrderDetails)
-    res.json(savedOrderDetail)
+    res.json(savedOrderDetails)
   } catch (err) {
     res.json({ message: err })
   }

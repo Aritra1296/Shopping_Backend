@@ -17,8 +17,12 @@ const productDetailsSchema = mongoose.Schema({
 
 
 const orderDetailSchema = mongoose.Schema({
-  productDetails:[productDetailsSchema],
+  productDetails: [productDetailsSchema],
   email: {
+    type: String,
+    required: true,
+  },
+  userId: {
     type: String,
     required: true,
   },
