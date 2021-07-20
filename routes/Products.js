@@ -27,7 +27,8 @@ router.get('/', async (req, res) => {
 })
 
 //SUBMIT A PRODUCT
-router.post('/submitNew', upload.single('productImage'), async (req, res) => {
+router.post('/submitNew', upload.array('productImage',10), async (req, res) => {
+
   const product = new Product({
     productCategory: req.body.productCategory,
     productName: req.body.productName,
@@ -35,9 +36,11 @@ router.post('/submitNew', upload.single('productImage'), async (req, res) => {
     productPrice: req.body.productPrice,
     productStatus: req.body.productStatus,
     productMaxQuantiy: req.body.productMaxQuantiy,
-    productImage: req.file.path,
+    productImage: req.files.map((file)=>{
+      return (file.path)
+    })
   })
-  console.log(req.file)
+
   try {
     const savedProduct = await product.save()
     res.json(savedProduct)
