@@ -4,11 +4,59 @@ const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+router.get('/findAll', async (req, res) => {
+  try {
+    const user = await User.find()
+    res.json(user)
+  } catch (error) {
+    res.json({ message: error })
+  }
+})
+
+//GET DETAISL OF A SPECIFIC USER FROM DB BY EMAIL(-------WILL BE UPDATED LATER-------)
+router.get('/:userId', async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.params.userId })
+    res.json(user)
+  } catch (error) {
+    res.json({ message: error })
+  }
+})
+
+//UPDATE USER DETAILS
+router.patch(`/edit/:userId`, async (req, res) => {
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: req.params.userId },
+      {
+        $set: {
+          email: req.body.email,
+          userName: req.body.userName,
+          phone: req.body.phone,
+          gender: req.body.gender,
+          addressLine: req.body.addressLine,
+          landMark: req.body.landMark,
+          zip: req.body.zip,
+          city: req.body.city,
+          state: req.body.state,
+        },
+      }
+    )
+    res.json(updatedUser)
+  } catch (error) {
+    res.json({ message: error })
+  }
+})
 
 //SUBMIT A NEW USER
 router.post('/', async (req, res) => {
   try {
-    const { email, userName, userRole,password ,phone,gender} = req.body
+    const {
+      email,
+      userName,
+      userRole,
+      password
+     } = req.body
 
     //VALIDATION ALL  FIELDS REQUIRED
     if (!userName || !email || !password)
@@ -30,8 +78,13 @@ router.post('/', async (req, res) => {
       userName,
       userRole,
       passwordHash,
-      phone,
-      gender
+      phone: 'fill up details',
+      gender: 'fill up details',
+      addressLine: 'fill up details',
+      landMark: 'fill up details',
+      zip: 'fill up details',
+      city: 'fill up details',
+      state: 'fill up details',
     })
     const savedUser = await newUser.save()
 
@@ -43,18 +96,19 @@ router.post('/', async (req, res) => {
       process.env.JWT_SECRET
     )
     console.log('token', token)
+    console.log('user added')
 
     //SEND TOKEN TO HTTP-ONLY COOKIE
     res
       .cookie('token', token, {
-        domain : process.env.COOKIE_DOMAIN,
+        domain: process.env.COOKIE_DOMAIN,
         httpOnly: true,
       })
       .send()
   } catch (err) {
     res.json({ message: err })
   }
-});
+})
 
 //LOG IN METHOD
 router.post('/login', async (req, res) => {
@@ -79,35 +133,28 @@ router.post('/login', async (req, res) => {
     )
     if (!passwordCorrect)
       return res.status(401).json({ errorMessage: 'Wrong email or password' })
-  
-  
+
     //SIGN TOKEN
     const token = jwt.sign(
       {
         user: existingUser._id,
       },
-      process.env.JWT_SECRET,
-      
+      process.env.JWT_SECRET
     )
 
     //SEND TOKEN TO HTTP-ONLY COOKIE
-    console.log({
-      domain: process.env.COOKIE_DOMAIN,
-      httpOnly: true,
-    });
     res
       .cookie('token', token, {
         domain: process.env.COOKIE_DOMAIN,
         httpOnly: true,
       })
       .json(existingUser)
-      .send();
-
-      console.log("signed in");
-      
+      .send()
+    console.log(token)
+    console.log('signed in')
   } catch (error) {
     //res.json({ message: err })
-    console.log(error);
+    console.log(error)
   }
 })
 

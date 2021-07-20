@@ -7,6 +7,7 @@ require("dotenv/config");
 
 //MIDDLEWARE
 //COFIGURE CORS
+app.use('/ProductImages',express.static('ProductImages'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -20,7 +21,7 @@ app.use(
 app.use("/users", require("./routes/Users"));
 app.use("/products", require("./routes/Products"));
 app.use('/carts', require('./routes/Carts'));
-app.use('/addresses', require('./routes/Addresses'));
+app.use('/orders', require('./routes/OrderDetails'));
 
 //CONNECT TO DB
 mongoose.connect(

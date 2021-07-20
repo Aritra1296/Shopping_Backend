@@ -1,7 +1,28 @@
 const mongoose = require('mongoose')
 
-const userSchema = mongoose.Schema({
+const productDetailsSchema = mongoose.Schema({
+ productName: {
+    type: String,
+    required: true,
+  },
+  productImage: {
+    type: [String],
+    required: true,
+  },
+  productPrice: {
+    type: String,
+    required: true,
+  }
+})
+
+
+const orderDetailSchema = mongoose.Schema({
+  productDetails: [productDetailsSchema],
   email: {
+    type: String,
+    required: true,
+  },
+  userId: {
     type: String,
     required: true,
   },
@@ -9,19 +30,7 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  userRole: {
-    type: String,
-    required: true,
-  },
-  passwordHash: {
-    type: String,
-    required: true,
-  },
   phone: {
-    type: String,
-    required: true,
-  },
-  gender: {
     type: String,
     required: true,
   },
@@ -45,10 +54,10 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  date: {
+  Orderdate: {
     type: Date,
     default: Date.now,
   },
 })
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('OrderDetail', orderDetailSchema)
