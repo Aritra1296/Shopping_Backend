@@ -3,7 +3,7 @@ const router = express.Router()
 const Product = require('../models/Product')
 const path = require('path')
 const multer = require('multer')
-// const auth = require('../middleware/auth')
+const auth = require('../middleware/auth')
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 //GET ALL THE PRODUCTS OF A SPECIFIC USER FROM DB
-router.get('/', async (req, res) => {
+router.get('/',auth, async (req, res) => {
   try {
     const product = await Product.find()
     res.json(product)
@@ -27,30 +27,33 @@ router.get('/', async (req, res) => {
 })
 
 //SUBMIT A PRODUCT
-router.post('/submitNew', upload.array('productImage',10), async (req, res) => {
-
-  const product = new Product({
-    productCategory: req.body.productCategory,
-    productName: req.body.productName,
-    productDescription: req.body.productDescription,
-    productPrice: req.body.productPrice,
-    productStatus: req.body.productStatus,
-    productMaxQuantiy: req.body.productMaxQuantiy,
-    productImage: req.files.map((file)=>{
-      return (file.path)
+router.post(
+  '/submitNew',auth,
+  upload.array('productImage', 10),
+  async (req, res) => {
+    const product = new Product({
+      productCategory: req.body.productCategory,
+      productName: req.body.productName,
+      productDescription: req.body.productDescription,
+      productPrice: req.body.productPrice,
+      productStatus: req.body.productStatus,
+      productMaxQuantiy: req.body.productMaxQuantiy,
+      productImage: req.files.map((file) => {
+        return file.path
+      }),
     })
-  })
 
-  try {
-    const savedProduct = await product.save()
-    res.json(savedProduct)
-  } catch (err) {
-    res.json({ message: err })
+    try {
+      const savedProduct = await product.save()
+      res.json(savedProduct)
+    } catch (err) {
+      res.json({ message: err })
+    }
   }
-})
+)
 
 //GET THE SPECIFIC PRODUCT FROM DB FOR VIEW DETAILS
-router.get('/view/:productID', async (req, res) => {
+router.get('/view/:productID',auth, async (req, res) => {
   try {
     const product = await Product.findById(req.params.productID)
     res.json(product)
@@ -60,7 +63,7 @@ router.get('/view/:productID', async (req, res) => {
 })
 
 //DELETE A PRODUCT
-router.delete('/:productID', async (req, res) => {
+router.delete('/:productID', auth, async (req, res) => {
   try {
     const removedProduct = await Product.deleteOne({
       _id: req.params.productID,

@@ -3,7 +3,9 @@ const router = express.Router()
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+//const auth = require('../middleware/auth')
 
+//not needed for app
 router.get('/findAll', async (req, res) => {
   try {
     const user = await User.find()
@@ -14,7 +16,7 @@ router.get('/findAll', async (req, res) => {
 })
 
 //GET DETAISL OF A SPECIFIC USER FROM DB BY EMAIL(-------WILL BE UPDATED LATER-------)
-router.get('/:userId', async (req, res) => {
+router.get('/userDetails/:userId', async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.params.userId })
     res.json(user)
@@ -51,12 +53,7 @@ router.patch(`/edit/:userId`, async (req, res) => {
 //SUBMIT A NEW USER
 router.post('/', async (req, res) => {
   try {
-    const {
-      email,
-      userName,
-      userRole,
-      password
-     } = req.body
+    const { email, userName,  password } = req.body
 
     //VALIDATION ALL  FIELDS REQUIRED
     if (!userName || !email || !password)
@@ -76,8 +73,8 @@ router.post('/', async (req, res) => {
     const newUser = new User({
       email,
       userName,
-      userRole,
       passwordHash,
+      userRole : 'User',
       phone: 'fill up details',
       gender: 'fill up details',
       addressLine: 'fill up details',
@@ -182,5 +179,7 @@ router.get('/logout', async (req, res) => {
     })
     .send()
 })
+
+
 
 module.exports = router

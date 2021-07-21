@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const OrderDetail = require('../models/OrderDetail')
+//const auth = require('../middleware/auth')
 
 //GET ALL THE ORDER
 router.get('/', async (req, res) => {
