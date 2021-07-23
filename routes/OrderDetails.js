@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const OrderDetail = require('../models/OrderDetail')
-//const auth = require('../middleware/auth')
+const auth = require('../middleware/auth')
 
 //GET ALL THE ORDER
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const orderDetail = await OrderDetail.find()
     res.json(orderDetail)
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 })
 
 //GET ALL  THE ORDER OF A SPECIFIC USER
-router.get('/orderHistory/:userId', async (req, res) => {
+router.get('/orderHistory/:userId', auth, async (req, res) => {
   try {
     const orderDetailHistory = await OrderDetail.find({
       userId: req.params.userId,
@@ -26,7 +26,7 @@ router.get('/orderHistory/:userId', async (req, res) => {
 })
 
 //SUBMIT A ORDER
-router.post('/submitNew', async (req, res) => {
+router.post('/submitNew', auth, async (req, res) => {
   const orderDetail = new OrderDetail({
     productDetails: req.body.carts.map((cart) => {
       return {
@@ -46,7 +46,6 @@ router.post('/submitNew', async (req, res) => {
     state: req.body.user.state,
   })
   try {
-
     const savedOrderDetails = await orderDetail.save()
     res.json(savedOrderDetails)
   } catch (err) {

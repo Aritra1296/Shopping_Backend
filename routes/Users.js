@@ -3,7 +3,7 @@ const router = express.Router()
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-//const auth = require('../middleware/auth')
+const auth = require('../middleware/auth')
 
 //not needed for app
 router.get('/findAll', async (req, res) => {
@@ -16,7 +16,7 @@ router.get('/findAll', async (req, res) => {
 })
 
 //GET DETAISL OF A SPECIFIC USER FROM DB BY EMAIL(-------WILL BE UPDATED LATER-------)
-router.get('/userDetails/:userId', async (req, res) => {
+router.get('/userDetails/:userId',auth, async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.params.userId })
     res.json(user)
@@ -26,7 +26,7 @@ router.get('/userDetails/:userId', async (req, res) => {
 })
 
 //UPDATE USER DETAILS
-router.patch(`/edit/:userId`, async (req, res) => {
+router.patch(`/edit/:userId`, auth, async (req, res) => {
   try {
     const updatedUser = await User.findOneAndUpdate(
       { _id: req.params.userId },
@@ -92,7 +92,7 @@ router.post('/', async (req, res) => {
       },
       process.env.JWT_SECRET
     )
-    console.log('token', token)
+    console.log("token", token)
     console.log('user added')
 
     //SEND TOKEN TO HTTP-ONLY COOKIE
@@ -102,6 +102,7 @@ router.post('/', async (req, res) => {
         httpOnly: true,
       })
       .send()
+
   } catch (err) {
     res.json({ message: err })
   }
@@ -139,18 +140,20 @@ router.post('/login', async (req, res) => {
       process.env.JWT_SECRET
     )
 
-    //SEND TOKEN TO HTTP-ONLY COOKIE
+     //SEND TOKEN TO HTTP-ONLY COOKIE
     res
       .cookie('token', token, {
         domain: process.env.COOKIE_DOMAIN,
+        withCredentials: true,
         httpOnly: true,
+        secure: true,
       })
       .json(existingUser)
       .send()
-    console.log(token)
+
+    console.log('token', token)
     console.log('signed in')
   } catch (error) {
-    //res.json({ message: err })
     console.log(error)
   }
 })

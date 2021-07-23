@@ -28,7 +28,8 @@ router.get('/',auth, async (req, res) => {
 
 //SUBMIT A PRODUCT
 router.post(
-  '/submitNew',auth,
+  '/submitNew',
+  auth,
   upload.array('productImage', 10),
   async (req, res) => {
     const product = new Product({
@@ -53,7 +54,7 @@ router.post(
 )
 
 //GET THE SPECIFIC PRODUCT FROM DB FOR VIEW DETAILS
-router.get('/view/:productID',auth, async (req, res) => {
+router.get('/view/:productID', auth, async (req, res) => {
   try {
     const product = await Product.findById(req.params.productID)
     res.json(product)
