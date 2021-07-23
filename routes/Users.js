@@ -92,7 +92,6 @@ router.post('/', async (req, res) => {
       },
       process.env.JWT_SECRET
     )
-    console.log("token", token)
     console.log('user added')
 
     //SEND TOKEN TO HTTP-ONLY COOKIE
@@ -150,8 +149,6 @@ router.post('/login', async (req, res) => {
       })
       .json(existingUser)
       .send()
-
-    console.log('token', token)
     console.log('signed in')
   } catch (error) {
     console.log(error)
