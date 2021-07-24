@@ -150,7 +150,6 @@ router.post('/login', async (req, res) => {
       })
       .json(existingUser)
       .send()
-    console.log('signed in')
   } catch (error) {
     console.log(error)
   }
@@ -172,7 +171,6 @@ router.get('/loggedIn', async (req, res) => {
 
 //LOG OUT METHOD
 router.get('/logout', async (req, res) => {
-  console.log('logged out')
   res
     .cookie('token', '', {
       domain: process.env.COOKIE_DOMAIN,
