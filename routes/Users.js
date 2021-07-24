@@ -135,6 +135,7 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign(
       {
         user: existingUser._id,
+        userRole: existingUser.userRole,
       },
       process.env.JWT_SECRET
     )
@@ -160,7 +161,6 @@ router.get('/loggedIn', async (req, res) => {
   try {
     const token = req.cookies.token
     if (!token) return res.status(401).json(false)
-
     const payload=jwt.verify(token, process.env.JWT_SECRET)
     res.send({ loggedIn: true, ...payload })
 
