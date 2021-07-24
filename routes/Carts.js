@@ -16,7 +16,7 @@ router.get('/:userId', auth, async (req, res) => {
 //SUBMIT A CART
 router.post('/submitNew', auth, async (req, res) => {
   const cart = new Cart({
-    userId: req.body.userId,
+    userId: req.body.loginUserID,
     productName: req.body.productName,
     productDescription: req.body.productDescription,
     productImage: req.body.productImage,

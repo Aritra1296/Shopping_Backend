@@ -160,8 +160,10 @@ router.get('/loggedIn', async (req, res) => {
   try {
     const token = req.cookies.token
     if (!token) return res.status(401).json(false)
-    jwt.verify(token, process.env.JWT_SECRET)
-    res.send(true)
+
+    const payload=jwt.verify(token, process.env.JWT_SECRET)
+    res.send({ loggedIn: true, ...payload })
+
   } catch (error) {
     console.log(error)
     res.json(false)
