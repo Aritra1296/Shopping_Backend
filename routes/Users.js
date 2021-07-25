@@ -90,7 +90,6 @@ router.post('/', async (req, res) => {
         domain: process.env.COOKIE_DOMAIN,
         withCredentials: true,
         httpOnly: true,
-        secure: true,
       })
       .send()
   } catch (err) {
@@ -137,7 +136,6 @@ router.post('/login', async (req, res) => {
         domain: process.env.COOKIE_DOMAIN,
         withCredentials: true,
         httpOnly: true,
-        secure: true,
       })
       .json(existingUser)
       .send()
