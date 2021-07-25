@@ -5,18 +5,8 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const auth = require('../middleware/auth')
 
-//not needed for app
-router.get('/findAll', async (req, res) => {
-  try {
-    const user = await User.find()
-    res.json(user)
-  } catch (error) {
-    res.json({ message: error })
-  }
-})
-
-//GET DETAISL OF A SPECIFIC USER FROM DB BY EMAIL(-------WILL BE UPDATED LATER-------)
-router.get('/userDetails/:userId',auth, async (req, res) => {
+//GET DETAISL OF A SPECIFIC USER FROM DB BY USERID
+router.get('/userDetails/:userId', auth, async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.params.userId })
     res.json(user)
@@ -53,7 +43,7 @@ router.patch(`/edit/:userId`, auth, async (req, res) => {
 //SUBMIT A NEW USER
 router.post('/', async (req, res) => {
   try {
-    const { email, userName,  password } = req.body
+    const { email, userName, password } = req.body
 
     //VALIDATION ALL  FIELDS REQUIRED
     if (!userName || !email || !password)
@@ -74,7 +64,7 @@ router.post('/', async (req, res) => {
       email,
       userName,
       passwordHash,
-      userRole : 'User',
+      userRole: 'User',
       phone: 'fill up details',
       gender: 'fill up details',
       addressLine: 'fill up details',
@@ -98,10 +88,11 @@ router.post('/', async (req, res) => {
     res
       .cookie('token', token, {
         domain: process.env.COOKIE_DOMAIN,
+        withCredentials: true,
         httpOnly: true,
+        secure: true,
       })
       .send()
-
   } catch (err) {
     res.json({ message: err })
   }
@@ -140,7 +131,7 @@ router.post('/login', async (req, res) => {
       process.env.JWT_SECRET
     )
 
-     //SEND TOKEN TO HTTP-ONLY COOKIE
+    //SEND TOKEN TO HTTP-ONLY COOKIE
     res
       .cookie('token', token, {
         domain: process.env.COOKIE_DOMAIN,
@@ -160,9 +151,8 @@ router.get('/loggedIn', async (req, res) => {
   try {
     const token = req.cookies.token
     if (!token) return res.status(401).json(false)
-    const payload=jwt.verify(token, process.env.JWT_SECRET)
+    const payload = jwt.verify(token, process.env.JWT_SECRET)
     res.send({ loggedIn: true, ...payload })
-
   } catch (error) {
     console.log(error)
     res.json(false)
@@ -179,7 +169,5 @@ router.get('/logout', async (req, res) => {
     })
     .send()
 })
-
-
 
 module.exports = router
